@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Registration Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <div class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-fuchsia-400 to-purple-800 p-4 gap-5">
+    <form id="studentForm" class="max-w-md w-full bg-white p-6 rounded-lg shadow-lg" onsubmit="registerStudent(event)">
+      <h2 class="text-center text-xl font-bold text-fuchsia-800 mb-4">Student Registration Form</h2>
+  
+      <div class="mb-4">
+        <label for="name" class="block font-semibold">Name</label>
+        <input type="text" name="name" id="name" class="w-full border border-gray-300 rounded p-2" placeholder="Enter your Name" required />
+      </div>
+  
+      <div class="mb-4">
+        <label for="age" class="block font-semibold">Age</label>
+        <input type="number" name="age" id="age" class="w-full border border-gray-300 rounded p-2" placeholder="Enter your Age" required />
+      </div>
+  
+      <div class="mb-4">
+        <label class="block font-semibold">Gender</label>
+        <div class="flex gap-4 mt-1">
+          <label class="flex items-center"><input type="radio" name="gender" value="Male" required class="mr-1" /> Male</label>
+          <label class="flex items-center"><input type="radio" name="gender" value="Female" required class="mr-1" /> Female</label>
+          <label class="flex items-center"><input type="radio" name="gender" value="Other" required class="mr-1" /> Other</label>
+        </div>
+      </div>
+  
+      <div class="mb-4">
+        <label for="email" class="block font-semibold">Email</label>
+        <input type="email" name="email" id="email" class="w-full border border-gray-300 rounded p-2" placeholder="Enter your E-mail" required />
+      </div>
+  
+      <div class="mb-4">
+        <label for="course" class="block font-semibold">Course</label>
+        <select name="course" id="course" class="w-full border border-gray-300 rounded p-2" required>
+          <option value="" disabled selected>Choose a course</option>
+          <option value="Web Development">Web Development</option>
+          <option value="Data Science">Data Science</option>
+          <option value="Cyber Security">Cyber Security</option>
+        </select>
+      </div>
+  
+      <button type="submit" class="w-full bg-fuchsia-800 text-white font-bold py-2 rounded hover:bg-fuchsia-900">Register</button>
+    </form>
+    <div class="bg-white rounded-lg">
+        <table id="studentTable" class="w-full mt-5 border-collapse border border-gray-300 hidden">
+            <thead>
+                <tr>
+                    <th class="border border-gray-300 p-2">Name</th>
+                    <th class="border border-gray-300 p-2">Age</th>
+                    <th class="border border-gray-300 p-2">Gender</th>
+                    <th class="border border-gray-300 p-2">Email</th>
+                    <th class="border border-gray-300 p-2">Course</th>
+                    <th class="border border-gray-300 p-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+    </div>
+  </div>
+  
+  <script>
+      function registerStudent(event) {
+          event.preventDefault();
+          let form = document.getElementById("studentForm");
+          if (!form.checkValidity()) {
+              form.reportValidity();
+              return;
+          }
+          let name = document.getElementById("name").value;
+          let age = document.getElementById("age").value;
+          let gender = document.querySelector('input[name="gender"]:checked').value;
+          let email = document.getElementById("email").value;
+          let course = document.getElementById("course").value;
+          let table = document.getElementById("studentTable");
+          let tbody = table.querySelector("tbody");
+          
+          table.classList.remove("hidden");
+          
+          let row = document.createElement("tr");
+          row.innerHTML = `
+              <td class="border border-gray-300 p-2">${name}</td>
+              <td class="border border-gray-300 p-2">${age}</td>
+              <td class="border border-gray-300 p-2">${gender}</td>
+              <td class="border border-gray-300 p-2">${email}</td>
+              <td class="border border-gray-300 p-2">${course}</td>
+              <td class="border border-gray-300 p-2 text-center">
+                  <button onclick="deleteRow(this)" class="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-700">Delete</button>
+              </td>
+          `;
+          tbody.appendChild(row);
+          form.reset();
+      }
+  
+      function deleteRow(button) {
+          let row = button.parentElement.parentElement;
+          let tbody = row.parentElement;
+          row.remove();
+          if (tbody.children.length === 0) {
+              document.getElementById("studentTable").classList.add("hidden");
+          }
+      }
+  </script>
+  
+    </script>
+  </body>
+</html>
